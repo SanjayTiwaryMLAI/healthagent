@@ -1,3 +1,4 @@
+
 import os
 import time
 import streamlit as st
@@ -12,9 +13,6 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 st.set_page_config(layout="wide")
 st.markdown("<h1 style='text-align: center;'>👨‍⚕️ Healthcare Demo - Amazon Bedrock Agent and Knowledge Base 🚀</h1>", unsafe_allow_html=True)
-
-#st.title("👨‍⚕️ Healthcare Agent Demo Powered by AWS Bedrock Agent and Knowledge Base🚀")
-
 
 client = boto3.client('bedrock-agent-runtime',  region_name="us-east-1")
 
@@ -83,6 +81,9 @@ def get_agent_response(input_text):
 
     return final_answer
 
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
     
@@ -99,16 +100,28 @@ for response in st.session_state.response:
         
 prompt = st.chat_input("How can I help?")
 if prompt:
+    # Concatenate chat history with the current user input
+    chat_history_text = "\n".join([f"{message['role']}: {message['content']}" for message in st.session_state.chat_history[-5:]])
+    prompt_with_history = f"{chat_history_text}\nHuman: {prompt}"
+
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(f"{prompt}")
     
-    with st.chat_message("assistant"):         
-        response = get_agent_response(prompt)
+    with st.chat_message("assistant"):
+        response = get_agent_response(prompt_with_history)
         st.markdown(f"**{response}**")
         st.session_state.messages.append({"role": "assistant", "content": response})
+
+    # Append user input and agent response to chat history
+    st.session_state.chat_history.append({"role": "Human", "content": prompt})
+    st.session_state.chat_history.append({"role": "Assistant", "content": response})
+
+    # Truncate chat history to keep only the last 5 messages
+    st.session_state.chat_history = st.session_state.chat_history[-10:]
 
 # Add a button to clear the chat
 if st.button("Clear Chat"):
     st.session_state.messages = []
     st.session_state.response = []
+    st.session_state.chat_history = []
