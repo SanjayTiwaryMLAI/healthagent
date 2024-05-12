@@ -11,7 +11,9 @@ import pprint
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 st.set_page_config(layout="wide")
-st.title("👨‍⚕️ Health Agent Demo Powered by AWS Bedrock Agent 🚀")
+st.markdown("<h1 style='text-align: center;'>👨‍⚕️ Healthcare Demo - Amazon Bedrock Agent and Knowledge Base 🚀</h1>", unsafe_allow_html=True)
+
+#st.title("👨‍⚕️ Healthcare Agent Demo Powered by AWS Bedrock Agent and Knowledge Base🚀")
 
 
 client = boto3.client('bedrock-agent-runtime',  region_name="us-east-1")
@@ -23,6 +25,7 @@ enable_trace = True
 input_text = ""
 agent_response = ""
 
+@st.cache_data
 def get_type(data):
     if isinstance(data, dict):
         for key, value in data.items():
@@ -38,7 +41,7 @@ def generate_new_session_id():
     return new_session_id
 
 # Define function to get agent response
-@st.cache_data
+# @st.cache_data
 def get_agent_response(input_text):
     # invoke the agent API
     response = client.invoke_agent(
@@ -60,13 +63,16 @@ def get_agent_response(input_text):
         for event in event_stream:
             if 'chunk' in event:
                 data = event['chunk']['bytes']
-                logger.info(f"Final answer ->\n{data.decode('utf8')}")
+                logger.info(f"Final answer -&gt;\n{data.decode('utf8')}")
                 final_answer += data.decode('utf8')
-            elif 'trace' in event:   
+            elif 'trace' in event: 
+                #add rotating icon for wait timer on  Streamlit UI
+                with st.spinner("Wait for it..."):
+                    time.sleep(1)
                 model_input_type = get_type(event['trace'])
-                
-                with st.expander(f"{model_input_type}", expanded=False):
-                    st.json(event['trace']['trace'])
+                if model_input_type != None:
+                    with st.expander(f"{model_input_type}", expanded=False):
+                        st.json(event['trace']['trace'])
                         
 
             else:
@@ -95,9 +101,14 @@ prompt = st.chat_input("How can I help?")
 if prompt:
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
-        st.markdown(prompt)
+        st.markdown(f"{prompt}")
     
     with st.chat_message("assistant"):         
         response = get_agent_response(prompt)
-        st.markdown(response)
+        st.markdown(f"**{response}**")
         st.session_state.messages.append({"role": "assistant", "content": response})
+
+# Add a button to clear the chat
+if st.button("Clear Chat"):
+    st.session_state.messages = []
+    st.session_state.response = []

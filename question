@@ -1,1 +1,30 @@
-generate discharge report for the patient 'PAT-0001'
+user-1
+
+1. Please give background information about patient 'PAT-0001'
+
+2. what are test recommended for the based on patient Yash medical condition?
+
+3. what are the vital out of range for patient PAT-0001?
+
+4. what are the medication for KFT?
+
+give me details for Kidney function tests
+
+5. Generate discharge report for the patient 'PAT-0001'
+
+6. Give the final recommendation for patient yash. 
+
+user -2
+1. Please give background information about patient 'PAT-0002'
+
+2. what are test recommended for the based on patient Yash medical condition?
+
+3. what are the vital out of range for patient PAT-0002?
+
+4. what are the medication for MRI?
+
+give me details for MRI
+
+5. Generate discharge report for the patient 'PAT-0002'
+
+6. Give the final recommendation for patient Yashwi. 
