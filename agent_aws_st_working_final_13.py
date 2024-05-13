@@ -39,7 +39,7 @@ def generate_new_session_id():
     return new_session_id
 
 # Define function to get agent response
-# @st.cache_data
+
 def get_agent_response(input_text):
     # invoke the agent API
     response = client.invoke_agent(
@@ -66,12 +66,13 @@ def get_agent_response(input_text):
             elif 'trace' in event: 
                 #add rotating icon for wait timer on  Streamlit UI
                 with st.spinner("Wait for it..."):
-                    time.sleep(1)
+                    time.sleep(2)
                 model_input_type = get_type(event['trace'])
                 if model_input_type != None:
                     with st.expander(f"{model_input_type}", expanded=False):
                         st.json(event['trace']['trace'])
                         
+
             else:
                 raise Exception("unexpected event.", event)
     except Exception as e:
@@ -106,7 +107,7 @@ with st.sidebar:
 prompt = st.chat_input("How can I help?")
 if prompt:
     # Concatenate chat history with the current user input
-    chat_history_text = "\n".join([f"{message['role']}: {message['content']}" for message in st.session_state.chat_history[-2:]])
+    chat_history_text = "\n".join([f"{message['role']}: {message['content']}" for message in st.session_state.chat_history[-5:]])
     prompt_with_history = f"{chat_history_text}\nHuman: {prompt}"
 
     st.session_state.messages.append({"role": "user", "content": prompt})
@@ -115,7 +116,7 @@ if prompt:
     
     with st.chat_message("assistant"):
         response = get_agent_response(prompt_with_history)
-        st.markdown(f"{response}")
+        st.markdown(f"**{response}**")
         st.session_state.messages.append({"role": "assistant", "content": response})
 
     # Append user input and agent response to chat history
@@ -123,7 +124,7 @@ if prompt:
     st.session_state.chat_history.append({"role": "Assistant", "content": response})
 
     # Truncate chat history to keep only the last 5 messages
-    st.session_state.chat_history = st.session_state.chat_history[-2:]
+    st.session_state.chat_history = st.session_state.chat_history[-10:]
 
 # Add a button to clear the chat
 if st.button("Clear Chat"):
