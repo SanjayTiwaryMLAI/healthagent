@@ -39,7 +39,7 @@ def generate_new_session_id():
     return new_session_id
 
 # Define function to get agent response
-# @st.cache_data
+
 def get_agent_response(input_text):
     # invoke the agent API
     response = client.invoke_agent(
@@ -55,7 +55,6 @@ def get_agent_response(input_text):
     import json
     event_stream = response['completion']
     final_answer = ""
-    traces = []
 
     try:
         for event in event_stream:
@@ -97,6 +96,22 @@ for response in st.session_state.response:
     with st.chat_message(response["role"]):
         st.markdown(response["content"])
         
+
+with st.sidebar:
+    st.subheader("Questions")
+    
+    st.write("1. Please give background information about patient Yash M. Patel 'PAT-0001'")
+    
+    st.write("2. What are the vitals out of range")
+    
+    st.write("3. What are medical tests recommended for patient Yash?")
+    
+    st.write("4. What are the medication required for patient 'PAT-0001'")
+    
+    st.write("5. Tell me more about Kidney function tests")
+    
+    st.write("6. Generate discharge report for the patient 'PAT-0001'")
+
 with st.sidebar:
     st.subheader("Chat History")
     for message in st.session_state.chat_history:

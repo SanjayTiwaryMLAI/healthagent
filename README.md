@@ -13,21 +13,6 @@ Before you begin, make sure you have the following:
 * S3 Bucket: Create an S3 bucket to store assets like Python deployment zips for Lambda.
 * Python 3.9 or higher
 
-Export these in your terminal:
-
-```bash
-export LAMBDA_ROLE=arn:aws:iam::ACCOUNT_ID:role/YourLambdaExecutionRole  
-export S3_BUCKET=your_s3_bucket_name_here
-```
-
-## Installation
-
-Clone this repository:
-
-```bash
-git clone https://github.com/build-on-aws/amazon-bedrock-custom-langchain-agent.git
-```
-
 Navigate into the project directory:
 ```bash
 cd amazon-bedrock-custom-langchain-agent
@@ -47,17 +32,11 @@ Run the Streamlit app:
 streamlit run agent_aws_st.py
 ```
 
-You can also run the agent in the terminal:
+
+Run the Streamlit app:
 
 ```bash
-python agent_aws.py
+source .llmv/bin/activate 
 ```
 
-## Security
-
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
-
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
 

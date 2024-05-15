@@ -1,32 +1,12 @@
-user-1
-
-1. Please give background information about patient 'PAT-0001'
-
-2. what are test recommended for the based on patient Yash medical condition?
-
-what are test recommended
-
-3. what are the vital out of range for patient PAT-0001?
-
-4. what are the medication for KFT?
-
-give me details for Kidney function tests
-
-5. Generate discharge report for the patient 'PAT-0001'
-
-6. Give the final recommendation for patient yash. 
-
-Context- 
-1. Please give background information about patient 'PAT-0001'
+Questions
+1. Please give background information about patient Yash M. Patel 'PAT-0001'
 
 2. What are the vitals out of range
 
-3. What are clinical test recommended for patient Yash
+3. what are medical test recommended for patient Yash?
 
-4. What are the medication required for patient
+4. What are the medication required for patient 'PAT-0001'
 
 5. Tell me more about Kidney function tests
 
-5. Generate discharge report for the patient 'PAT-0001'
-
-6. Summarize the overall health recommendations
+6. Generate discharge report for the patient 'PAT-0001'
